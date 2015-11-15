@@ -13,6 +13,15 @@ import static dk.tim.StringUtil.isEmpty;
  * * Focus on the Java project
  * * Select File -> export
  * * Select runnable jar file
+ * 
+ * 
+ * Call from other Java program:
+		Process proc = Runtime.getRuntime().exec("java -jar C:\\A\\emailsender.jar timgrewy@gmail.com \"Test igen\" \"message\" C:\\A\\configuration.txt");
+		proc.waitFor();
+		java.io.InputStream is = proc.getInputStream();
+		byte b[] = new byte[is.available()];
+		is.read(b, 0, b.length);
+		System.out.println("msg: " + new String(b));
  */
 public class Main {
 
@@ -33,6 +42,7 @@ public class Main {
 		String header = args[1];
 		String message = args[2];
 		sender.sendEmail(to, header, message);
+		System.out.println("Sent");
 	}
 
 	private static void validateInput(String[] args) {
