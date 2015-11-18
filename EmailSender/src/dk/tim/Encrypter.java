@@ -22,7 +22,7 @@ public class Encrypter {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String pw = "emailrobot2015";
+		String pw = "<TYPE PW HERE>";
 		String encrypted = Encrypter.encrypt(pw);
 		System.out.println("This is your encrypted password: " + encrypted);
 	}
