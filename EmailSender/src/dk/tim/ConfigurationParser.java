@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class ConfigurationParser {
 	private static String LOGIN_PROPERTY = "login";
 	private static String PASSWORD_PROPERTY = "passwordEncrypted";
-	private Map<String, String> collect;
+	private Map<String, String> map;
 
 	/**
 	 * Example configuation file
@@ -23,12 +23,10 @@ public class ConfigurationParser {
 	 * Use Encrypter.java's main method to encrypt your password
 	 */
 	public ConfigurationParser(String filePath) {
-		try {
-			Path path = Paths.get(filePath);
-			Stream<String> lines;
-			lines = Files.lines(path);
-			collect = lines.collect(Collectors.toMap(x -> x.split("=")[0].trim(), x -> x.split("=")[1].trim()));
-			lines.close();
+		Path path = Paths.get(filePath);
+		try (Stream<String> lines = Files.lines(path);) {
+			map = lines.collect(Collectors.toMap(x -> x.split("=")[0].trim(), x -> x.split("=")[1].trim()));
+
 			if (isEmpty(getLogin()) || isEmpty(getDecryptedPassword())) {
 				throw new IllegalArgumentException("The file " + filePath + "must conatin \"+LOGIN_PROPERTY+\" and \"+PASSWORD_PROPERTY+\" to be valid for this program.");
 			}
@@ -38,16 +36,16 @@ public class ConfigurationParser {
 	}
 
 	public String getLogin() {
-		return collect.get(LOGIN_PROPERTY);
+		return map.get(LOGIN_PROPERTY);
 	}
 
 	public String getDecryptedPassword() {
-		String passEncrypter = collect.get(PASSWORD_PROPERTY);
+		String passEncrypter = map.get(PASSWORD_PROPERTY);
 		return Encrypter.decrypt(passEncrypter);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("ConfigurationParser [collect=%s]", collect);
+		return String.format("ConfigurationParser [collect=%s]", map);
 	}
 }

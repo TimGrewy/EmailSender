@@ -23,7 +23,7 @@ import static dk.tim.StringUtil.isEmpty;
 		is.read(b, 0, b.length);
 		System.out.println("msg: " + new String(b));
  */
-public class Main {
+public class EmailSenderMain {
 
 	public static void main(String[] args) {
 		validateInput(args);
